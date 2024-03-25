@@ -8,7 +8,7 @@ app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
 # change this to connect to your redis server
 # ===============================================
-redis_server = redis.Redis("YOUR_SERVER")
+redis_server = redis.Redis("localhost")
 # ===============================================
 
 redis_server.set('longitude', 13.21008)
@@ -20,7 +20,12 @@ redis_server.set('latitude', 55.71106)
 # 3. write the updated data to the database
 # ===============================================
 def moveDrone(d_long, d_la):
-    pass
+    longitude = float(redis_server.get('longitude').decode())
+    latitude = float(redis_server.get('latitude').decode())
+
+    redis_server.set('longitude', longitude+d_long)
+    redis_server.set('latitude', latitude+d_la)
+
 # ===============================================
 
 @app.route('/drone', methods=['POST'])
